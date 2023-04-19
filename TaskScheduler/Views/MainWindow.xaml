@@ -4,10 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TaskScheduler.Views"
+        xmlns:cnv="clr-namespace:TaskScheduler.Converters"
         mc:Ignorable="d"
         Title="Планировщик задач"
         Height="450" Width="800"
         MinHeight="400" MinWidth="640">
+    <Window.Resources>
+        <cnv:SelectedItemToVisibilityConverter x:Key="SelectedItemToVisibility"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" MinWidth="100"/>
@@ -15,7 +19,7 @@
             <ColumnDefinition Width="*" MinWidth="100"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="4*"  MinHeight="100"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="4*"  MinHeight="100"/>
@@ -30,19 +34,22 @@
                 <MenuItem Header="О приложении"/>
             </MenuItem>
         </Menu>
-        <ListView Grid.Row="1" x:Name="list" SelectionMode="Multiple" ScrollViewer.CanContentScroll="False"
+        <ListView x:Name="ListView" Grid.Row="1" SelectionMode="Extended" ScrollViewer.CanContentScroll="False"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ItemsSource="{Binding}">
+                  ItemsSource="{Binding Path=TaskList}" SelectedItem="{Binding Path=SelectedTask, Mode=TwoWay}">
             <ListView.View>
                 <GridView ColumnHeaderTemplate="{StaticResource GridViewColumnHeaderTemplate}">
-                    <GridViewColumn Header="Название"/>
-                    <GridViewColumn Header="Состояние"/>
-                    <GridViewColumn Header="Тригерры"/>
-                    <GridViewColumn Header="Создан"/>
+                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Состояние" DisplayMemberBinding="{Binding Status}"/>
+                    <GridViewColumn Header="Триггеры" DisplayMemberBinding="{Binding Triggers}"/>
+                    <GridViewColumn Header="Создан" DisplayMemberBinding="{Binding CreationDate, StringFormat=dd/MM/yy HH:mm:ss}"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="Создать задачу"/>
+                    <Separator/>
+                    <MenuItem Header="Выполнить"/>
                     <MenuItem Header="Отключить"/>
                     <MenuItem Header="Удалить"/>
                 </ContextMenu>
@@ -50,20 +57,64 @@
         </ListView>
         <GridSplitter Grid.Row="2" Height="3"
                       ShowsPreview="False" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-        <Frame Grid.Row="3"/>
+        <Frame x:Name="PropertyFrame" Grid.Row="3"/>
         <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Width="3"
                       ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
         <GroupBox Grid.Row="1" Grid.Column="2" Grid.RowSpan="3" Header="Действия">
             <StackPanel>
                 <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
-                        Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Cursor="Hand">
+                        Style="{StaticResource TransparentButtonStyle}">
                     <Button.Content>
                         <WrapPanel Orientation="Horizontal">
                             <Image MinWidth="25" MaxWidth="25"/>
-                            <Label Content="Создать задачу" Margin="3,0,0,0"/>
+                            <TextBlock Text="Создать задачу" Margin="3,0,0,0"/>
                         </WrapPanel>
                     </Button.Content>
                 </Button>
+                <StackPanel Visibility="{Binding ElementName=ListView, Path=SelectedItem, Converter={StaticResource SelectedItemToVisibility}}"
+                            Orientation="Vertical">
+                    <Border Height="25" Background="CadetBlue">
+                        <TextBlock Text="Выбранный элемент" Foreground="Black" Margin="5,0,0,0"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </Border>
+                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
+                        Style="{StaticResource TransparentButtonStyle}">
+                        <Button.Content>
+                            <WrapPanel Orientation="Horizontal">
+                                <Image MinWidth="25" MaxWidth="25"/>
+                                <TextBlock Text="Выполнить" Margin="3,0,0,0"/>
+                            </WrapPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
+                        Style="{StaticResource TransparentButtonStyle}">
+                        <Button.Content>
+                            <WrapPanel Orientation="Horizontal">
+                                <Image MinWidth="25" MaxWidth="25"/>
+                                <TextBlock Text="Остановить" Margin="3,0,0,0"/>
+                            </WrapPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
+                        Style="{StaticResource TransparentButtonStyle}">
+                        <Button.Content>
+                            <WrapPanel Orientation="Horizontal">
+                                <Image MinWidth="25" MaxWidth="25"/>
+                                <TextBlock Text="Свойства" Margin="3,0,0,0"/>
+                            </WrapPanel>
+                        </Button.Content>
+                    </Button>
+                    <Separator/>
+                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
+                        Style="{StaticResource TransparentButtonStyle}">
+                        <Button.Content>
+                            <WrapPanel Orientation="Horizontal">
+                                <Image MinWidth="25" MaxWidth="25"/>
+                                <TextBlock Text="Удалить" Margin="3,0,0,0"/>
+                            </WrapPanel>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </GroupBox>
     </Grid>
