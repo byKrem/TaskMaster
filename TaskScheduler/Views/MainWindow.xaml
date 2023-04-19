@@ -5,8 +5,66 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TaskScheduler.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Планировщик задач"
+        Height="450" Width="800"
+        MinHeight="400" MinWidth="640">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" MinWidth="100"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" MinWidth="100"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="4*"  MinHeight="100"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="4*"  MinHeight="100"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.ColumnSpan="3" VerticalAlignment="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Параметры"/>
+                <Separator/>
+                <MenuItem Header="Выход"/>
+            </MenuItem>
+            <MenuItem Header="Справка">
+                <MenuItem Header="О приложении"/>
+            </MenuItem>
+        </Menu>
+        <ListView Grid.Row="1" x:Name="list" SelectionMode="Multiple" ScrollViewer.CanContentScroll="False"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ItemsSource="{Binding}">
+            <ListView.View>
+                <GridView ColumnHeaderTemplate="{StaticResource GridViewColumnHeaderTemplate}">
+                    <GridViewColumn Header="Название"/>
+                    <GridViewColumn Header="Состояние"/>
+                    <GridViewColumn Header="Тригерры"/>
+                    <GridViewColumn Header="Создан"/>
+                </GridView>
+            </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Отключить"/>
+                    <MenuItem Header="Удалить"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
+        <GridSplitter Grid.Row="2" Height="3"
+                      ShowsPreview="False" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <Frame Grid.Row="3"/>
+        <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Width="3"
+                      ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+        <GroupBox Grid.Row="1" Grid.Column="2" Grid.RowSpan="3" Header="Действия">
+            <StackPanel>
+                <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
+                        Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" Cursor="Hand">
+                    <Button.Content>
+                        <WrapPanel Orientation="Horizontal">
+                            <Image MinWidth="25" MaxWidth="25"/>
+                            <Label Content="Создать задачу" Margin="3,0,0,0"/>
+                        </WrapPanel>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Window>
