@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Documents;
+﻿using System.Windows;
+using TaskScheduler.ViewModels;
 
 namespace TaskScheduler.Views
 {
@@ -12,13 +11,7 @@ namespace TaskScheduler.Views
         public MainWindow()
         {
             InitializeComponent();
-#if DEBUG
-            List<int> test = new List<int>();
-            test.Add(1);
-            test.Add(2);
-            test.Add(3);
-            ListView.ItemsSource = test;
-#endif
+            this.DataContext = new MainViewModel();
         }
     }
 }
