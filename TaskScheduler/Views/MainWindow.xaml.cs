@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using TaskScheduler.ViewModels;
 
 namespace TaskScheduler.Views
 {
@@ -11,7 +10,6 @@ namespace TaskScheduler.Views
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
         }
     }
 }

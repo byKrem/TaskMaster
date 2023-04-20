@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TaskScheduler.Views"
         xmlns:cnv="clr-namespace:TaskScheduler.Converters"
+        xmlns:vm="clr-namespace:TaskScheduler.ViewModels"
         mc:Ignorable="d"
         Title="Планировщик задач"
         Height="450" Width="800"
         MinHeight="400" MinWidth="640">
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
     <Window.Resources>
         <cnv:SelectedItemToVisibilityConverter x:Key="SelectedItemToVisibility"/>
     </Window.Resources>
@@ -28,7 +32,7 @@
             <MenuItem Header="Файл">
                 <MenuItem Header="Параметры"/>
                 <Separator/>
-                <MenuItem Header="Выход"/>
+                <MenuItem Header="Выход" Command="{Binding ShutdownCommand}"/>
             </MenuItem>
             <MenuItem Header="Справка">
                 <MenuItem Header="О приложении"/>
@@ -36,22 +40,22 @@
         </Menu>
         <ListView x:Name="ListView" Grid.Row="1" SelectionMode="Extended" ScrollViewer.CanContentScroll="False"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ItemsSource="{Binding Path=TaskList}" SelectedItem="{Binding Path=SelectedTask, Mode=TwoWay}">
+                  ItemsSource="{Binding Path=TaskList}" SelectedItem="{Binding Path=SelectedTask, Mode=OneWay}">
             <ListView.View>
                 <GridView ColumnHeaderTemplate="{StaticResource GridViewColumnHeaderTemplate}">
                     <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}"/>
                     <GridViewColumn Header="Состояние" DisplayMemberBinding="{Binding Status}"/>
-                    <GridViewColumn Header="Триггеры" DisplayMemberBinding="{Binding Triggers}"/>
+                    <GridViewColumn Header="Триггеры" DisplayMemberBinding="{Binding TriggersToString}"/>
                     <GridViewColumn Header="Создан" DisplayMemberBinding="{Binding CreationDate, StringFormat=dd/MM/yy HH:mm:ss}"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Создать задачу"/>
+                    <MenuItem Header="Создать задачу" Command="{Binding ShowWindowCommand}" CommandParameter="{x:Type local:TaskCreationWindow}"/>
                     <Separator/>
-                    <MenuItem Header="Выполнить"/>
-                    <MenuItem Header="Отключить"/>
-                    <MenuItem Header="Удалить"/>
+                    <MenuItem Header="Выполнить" Command="" CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"/>
+                    <MenuItem Header="Отключить" Command="" CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"/>
+                    <MenuItem Header="Удалить" Command="" CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"/>
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
@@ -62,7 +66,8 @@
                       ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
         <GroupBox Grid.Row="1" Grid.Column="2" Grid.RowSpan="3" Header="Действия">
             <StackPanel>
-                <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
+                <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command="{Binding ShowWindowCommand}"
+                        CommandParameter="{x:Type local:TaskCreationWindow}"
                         Style="{StaticResource TransparentButtonStyle}">
                     <Button.Content>
                         <WrapPanel Orientation="Horizontal">
@@ -77,7 +82,7 @@
                         <TextBlock Text="Выбранный элемент" Foreground="Black" Margin="5,0,0,0"
                            HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Border>
-                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
+                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command="" CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                         Style="{StaticResource TransparentButtonStyle}">
                         <Button.Content>
                             <WrapPanel Orientation="Horizontal">
@@ -86,7 +91,7 @@
                             </WrapPanel>
                         </Button.Content>
                     </Button>
-                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
+                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command="" CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                         Style="{StaticResource TransparentButtonStyle}">
                         <Button.Content>
                             <WrapPanel Orientation="Horizontal">
@@ -95,7 +100,7 @@
                             </WrapPanel>
                         </Button.Content>
                     </Button>
-                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
+                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command="" CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                         Style="{StaticResource TransparentButtonStyle}">
                         <Button.Content>
                             <WrapPanel Orientation="Horizontal">
@@ -105,7 +110,7 @@
                         </Button.Content>
                     </Button>
                     <Separator/>
-                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command=""
+                    <Button Margin="5" Padding="5" HorizontalContentAlignment="Left" Command="" CommandParameter="{Binding ElementName=ListView, Path=SelectedItem}"
                         Style="{StaticResource TransparentButtonStyle}">
                         <Button.Content>
                             <WrapPanel Orientation="Horizontal">
