@@ -1,2 +1,2 @@
-# TaskScheduler
+# TaskMaster
  Simple Task Scheduler

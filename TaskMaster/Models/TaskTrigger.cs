@@ -1,4 +1,4 @@
-﻿namespace TaskScheduler.Models
+﻿namespace TaskMaster.Models
 {
     internal abstract class TaskTrigger
     {

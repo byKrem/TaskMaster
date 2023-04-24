@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace TaskScheduler.Commands
+namespace TaskMaster.Commands
 {
-    internal class ShowWindowCommand : ICommand
+    internal class ShutdownCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
 
@@ -15,11 +15,7 @@ namespace TaskScheduler.Commands
 
         public void Execute(object? parameter)
         {
-            if(parameter is Type windowType)
-            {
-                Window? window = (Window?) Activator.CreateInstance(windowType);
-                window?.Show();
-            }
+            Application.Current.Shutdown();
         }
     }
 }

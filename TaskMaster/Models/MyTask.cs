@@ -3,9 +3,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using TaskScheduler.Enums;
 
-namespace TaskScheduler.Models
+namespace TaskMaster.Models
 {
     class MyTask : INotifyPropertyChanged
     {
@@ -13,7 +12,7 @@ namespace TaskScheduler.Models
         private string _name;
         private string _description;
         private DateTime _creationDate;
-        private TaskStatusEnum _status;
+        private TaskStatus _status;
         private ObservableCollection<Task> _actions;
         private ObservableCollection<TaskTrigger> _triggers;
         #endregion
@@ -24,7 +23,7 @@ namespace TaskScheduler.Models
             set 
             { 
                 _name = value;
-                OnPropertyChanged(nameof(Name));
+                OnPropertyChanged();
             }
         }
         public string Description 
@@ -33,7 +32,7 @@ namespace TaskScheduler.Models
             set 
             { 
                 _description = value;
-                OnPropertyChanged(nameof(Description));
+                OnPropertyChanged();
             }
         }
         public DateTime CreationDate
@@ -42,16 +41,16 @@ namespace TaskScheduler.Models
             set
             {
                 _creationDate = value;
-                OnPropertyChanged(nameof(CreationDate));
+                OnPropertyChanged();
             }
         }
-        public TaskStatusEnum Status
+        public TaskStatus Status
         {
             get => _status;
             set
             {
                 _status = value;
-                OnPropertyChanged(nameof(Status));
+                OnPropertyChanged();
             }
 
         }
@@ -61,7 +60,7 @@ namespace TaskScheduler.Models
             set 
             { 
                 _actions = value;
-                OnPropertyChanged(nameof(Actions));
+                OnPropertyChanged();
             }
         }
         public ObservableCollection<TaskTrigger> Triggers
@@ -70,7 +69,7 @@ namespace TaskScheduler.Models
             set 
             {
                 _triggers = value;
-                OnPropertyChanged(nameof(Triggers));
+                OnPropertyChanged();
             }
         }
         public string TriggersToString
@@ -93,7 +92,7 @@ namespace TaskScheduler.Models
             Name = name;
             Description = description;
             CreationDate = DateTime.Now;
-            Status = TaskStatusEnum.Ready;
+            Status = TaskStatus.WaitingToRun;
             Actions = new ObservableCollection<Task>();
             Triggers = new ObservableCollection<TaskTrigger>();
         }

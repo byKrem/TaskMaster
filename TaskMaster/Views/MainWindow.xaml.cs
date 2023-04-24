@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace TaskScheduler.Views
+namespace TaskMaster.Views
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml

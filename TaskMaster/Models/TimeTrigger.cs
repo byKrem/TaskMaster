@@ -1,4 +1,4 @@
-﻿namespace TaskScheduler.Models
+﻿namespace TaskMaster.Models
 {
     internal class TimeTrigger : TaskTrigger
     {
